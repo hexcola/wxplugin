@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="wxpluginApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Wechat Plugin</title>
+    <link rel="stylesheet" href="stylesheets/reset.css">
+</head>
+<body>
+
+<!-- Login -->
+<div class="login" ng-controller="loginController">
+    <div class="login_box">
+        <div class="qrcode">
+            <img class="img" src="{{qrcodeUrl}}">
+        </div>
+
+        <div class="avatar">
+            <img class="img" src="{{userAvatar}}">
+        </div>
+    </div>
+</div>
+
+<!-- how load different views-->
+<!--Main-->
+<div class="main">
+    <div class="main_inner" ng-right-click="showContextMenu($event)">
+        <!--BEGIN panel-->
+        <div class="panel" ng-class="{give_me: !isCloseGiveMeFive}">
+
+            <!--BEGIN header-->
+            <div class="header">
+                <div class="avatar">
+                    <img class="img"
+                         src="https://res.wx.qq.com/zh_CN/htmledition/v2/images/web_wechat_no_contect26cf94.png"
+                         mm-src="{{account.HeadImgUrl}}" ng-click="showProfile($event)"/>
+                </div>
+                <div class="info">
+                    <h3 class="nickname">
+                        <span ng-bind-html="account.NickName" class="display_name"></span>
+                        <a class="opt" href="javascript:;" ng-show="account.HeadImgUrl" ng-click="toggleSystemMenu()"><i
+                                class="web_wechat_add"></i></a>
+                    </h3>
+                    <!--<p class="signature" ng-bind-html="account.Signature" title="{{account.Signature|emojiHideFilter}}"></p>-->
+                </div>
+            </div>
+            <!--END header-->
+
+            <!--BEGIN search-->
+            <div class="search_bar" id="search_bar">
+                <i class="web_wechat_search"></i>
+                <input class="frm_search" type="text" ng-model="keyword" ng-input="search($event)"
+                       ng-keydown="searchKeydown($event)" ng-blur="focus = false;" placeholder="搜索"/>
+            </div>
+            <!--END search-->
+
+            <!--BEGIN tab-->
+            <div class="tab" ng-class="{no_reader: !isShowReader}">
+                <div class="tab_item">
+                    <a class="chat" ui-sref="chat" ng-dblclick="dblclickChat()" title="聊天"><i
+                            class="web_wechat_tab_chat"
+                            ng-class="{web_wechat_tab_chat_hl: $state.includes('chat')}"></i></a>
+                </div>
+                <div class="tab_item" ng-if="isShowReader">
+                    <a class="chat" ui-sref="read" title="阅读"><i class="web_wechat_tab_public"
+                                                                 ng-class="{web_wechat_tab_public_hl: $state.includes('read')}"></i></a>
+                </div>
+                <div class="tab_item no_extra">
+                    <a class="chat" ui-sref="contact" title="通讯录"><i class="web_wechat_tab_friends"
+                                                                     ng-class="{web_wechat_tab_friends_hl: $state.includes('contact')}"></i></a>
+                </div>
+            </div>
+            <!--END tab-->
+
+            <!--BEGIN give me five-->
+            <div class="give_me_five" ng-if="!isCloseGiveMeFive">
+                <a href="javascript:;" class="opt" ng-click="closeGiveMeFive()">
+                    <i class="ChatListBanner_Close"></i>
+                </a>
+
+                <p class="msg" ng-click="clickAndClose()">
+                    <a href="http://weixin.qq.com/cgi-bin/readtemplate?t=win_weixin&platform=wx&lang=zh_CN"
+                       target="_blank">微信 for Windows 正式版发布</a>
+                </p>
+            </div>
+            <!--END give me five-->
+
+            <!--BEGIN nav view-->
+            <div ui-view="navView" id="navView"></div>
+
+            <div class="nav_view"
+                 ng-style="{visibility:$state.current.name ==='chat'?'visible':'hidden',width:$state.current.name ==='chat'?'auto':'0'}"
+                 nav-chat-directive></div>
+            <div class="nav_view"
+                 ng-style="{visibility:$state.current.name ==='contact'?'visible':'hidden',width:$state.current.name ==='contact'?'auto':'0'}"
+                 nav-contact-directive></div>
+            <div class="nav_view"
+                 ng-style="{visibility:$state.current.name ==='read'?'visible':'hidden',width:$state.current.name ==='read'?'auto':'0'}"
+                 nav-read-directive></div>
+
+            <!--</div>-->
+            <!--END nav view-->
+        </div>
+        <!--END panel-->
+
+        <!--BEGIN chat-->
+        <div ui-view="contentView" style="height:100%;"></div>
+        <!--END chat-->
+
+        <!--BEGIN contextMenu-->
+        <div context-menu-directive></div>
+        <!--END contextMenu-->
+    </div>
+    <p class="copyright">
+        <span>&copy; 1998 - 2015 Tencent Inc. All Rights Reserved</span>
+        <span class="sep"></span>
+        <a href="https://login.weixin.qq.com/faq_webwx?lang=zh_CN" target="_blank">帮助</a>
+        <!--<span class="sep"></span>-->
+        <!--<a href="/?lang=zh_CN&from=webwxv2">返回旧版</a>-->
+    </p>
+</div>
+<div style="position:absolute;top:0;left:0;width:0;height:0;">
+    <audio id="voiceMsgPlayer" class="voicePlayer"></audio>
+    <audio id="msgNoticePlayer" class="voicePlayer"></audio>
+</div>
+
+<script src="javascripts/angular.min.js"></script>
+<script src="javascripts/controllers.js"></script>
+</body>
+</html>

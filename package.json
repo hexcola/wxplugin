@@ -1,0 +1,17 @@
+{
+  "name": "wxplugin",
+  "version": "1.0.0",
+  "description": "Wechat plugin",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "hexcola",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.13.2",
+    "express": "^4.13.1",
+    "request": "^2.58.0",
+    "xml2js": "^0.4.9"
+  }
+}
